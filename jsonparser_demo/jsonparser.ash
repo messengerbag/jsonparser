@@ -4,10 +4,10 @@
  /// JSON type identifier.
  enum JsonTokenType {
   eJSON_Tok_UNDEFINED = 0,
-  eJSON_Tok_OBJECT,    /* Object */
-  eJSON_Tok_ARRAY,     /* Array */
-  eJSON_Tok_STRING,    /* String */
-  eJSON_Tok_PRIMITIVE,   /* ther primitive: number, boolean (true/false) or null */
+  eJSON_Tok_OBJECT,     /* Object */
+  eJSON_Tok_ARRAY,      /* Array */
+  eJSON_Tok_STRING,     /* String */
+  eJSON_Tok_PRIMITIVE,  /* Other primitive: number, boolean (true/false) or null */
   eJSON_TokMAX
 };
 
@@ -24,7 +24,7 @@ managed struct JsonToken {
   JsonTokenType type;
   /// start position in JSON data string
   int start;
-  /// end position in JSON data string
+  /// end position in JSON data string (non-inclusive)
   int end;
   /// 0 if it's a leaf value, 1 or bigger if it's a key or object/array
   int size;
@@ -46,8 +46,8 @@ managed struct JsonParser {
   int toknext;
   /// superior token node, e.g. parent object or array
   int toksuper;
-  /// Parses a JSON data string into and array of tokens, each describing a single JSON object. Negative return is a JsonError, otherwise it's the number of used tokens.
-  import int Parse(String json_string, JsonToken *tokens[], int num_tokens);
+  /// Parses a JSON data string into and array of tokens, each describing a single JSON object. (num_tokens must be size of tokens[] array.) Negative return is a JsonError, otherwise it's the number of used tokens.
+  import int Parse(String json_string, JsonToken* tokens[], int num_tokens);
   /// Marks the parser for reset, useful if you want to use it again with a different file. Reset only actually happens when Parse is called.
   import void Reset();
   protected bool _IsNotReset;
@@ -77,7 +77,7 @@ struct MiniJsonParser {
   import readonly attribute MiniJsonParserState CurrentState;
   /// Gets the current dot separated key.
   import readonly attribute String CurrentFullKey;
-  /// Checks if the state and key type currently are a leaf. True if it's, usually leafs are the interesting tokens we want when parsing.
+  /// Checks if the state and key type currently are a leaf. True if it is. Usually leaves are the interesting tokens we want when parsing.
   import readonly attribute bool CurrentTokenIsLeaf;
 
   // a bunch of protected things to hide the complexity of simplicity
