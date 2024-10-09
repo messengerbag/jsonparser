@@ -13,7 +13,7 @@
 
 /// Negative numbers after parsing can be either error below
 enum JsonError {
-  eJSON_Error_InsuficientTokens = -1, /* Not enough tokens were provided */
+  eJSON_Error_InsufficientTokens = -1, /* Not enough tokens were provided */
   eJSON_Error_InvalidCharacter = -2,  /* Invalid character inside JSON string */
   eJSON_Error_Partial = -3            /* The string is not a full JSON packet, more bytes expected */
 };
